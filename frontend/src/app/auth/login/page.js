@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import { baseUrl } from "../../utils/baseUrl";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const Login = () => {
         }
       };
       const body = JSON.stringify({ email, password });
-      const res = await axios.post('http://localhost:5000/api/users/login', body, config);
+      const res = await axios.post(`${baseUrl}/api/users/login`, body, config);
       console.log('User logged in:', res.data);
 
       // Redirect after login

@@ -95,6 +95,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import { baseUrl } from "../utils/baseUrl";
 
 const DashboardPage = () => {
   const [products, setProducts] = useState([]);
@@ -106,7 +107,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products", {
+        const { data } = await axios.get(`${baseUrl}/api/products`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -124,7 +125,7 @@ const DashboardPage = () => {
     console.log("User role:", userRole);
     if (!userRole) {
       console.log("No role found, redirecting");
-      window.location.href = "/login";
+      window.location.href = "/auth/login";
     } else {
       setRole(userRole);
       fetchProducts();

@@ -492,6 +492,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Cropper from "react-easy-crop";
 import { v4 as uuidv4 } from "uuid";
 import getCroppedImg from "../utils/cropImage"; // A utility function to crop the image
+import { baseUrl } from "../utils/baseUrl";
 
 const ProductForm = ({ product }) => {
   const router = useRouter();
@@ -634,7 +635,7 @@ const ProductForm = ({ product }) => {
     if (userRole === "admin") {
       try {
         await axios.put(
-          `http://localhost:5000/api/products/${product._id}`,
+          `${baseUrl}/api/products/${product._id}`,
           { ...formData, image: imageUrl },
           {
             headers: {
@@ -661,7 +662,7 @@ const ProductForm = ({ product }) => {
       };
       try {
         await axios.post(
-          "http://localhost:5000/api/products/reviews/createReview",
+          `${baseUrl}/api/products/reviews/createReview`,
           reviewData,
           {
             headers: {

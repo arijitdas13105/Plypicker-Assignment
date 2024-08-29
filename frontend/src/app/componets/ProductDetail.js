@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import ProductForm from "./ProductForm";
+import { baseUrl } from "../utils/baseUrl";
 
 // Loading Spinner Component
 const LoadingSpinner = () => (
@@ -24,7 +25,7 @@ const ProductDetail = ({ id }) => {
 
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/products/${id}`,
+          `${baseUrl}/api/products/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

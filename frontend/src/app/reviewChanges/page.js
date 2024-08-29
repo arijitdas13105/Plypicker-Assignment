@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { baseUrl } from "../utils/baseUrl";
 
 const ChangesReview = () => {
   const [reviews, setReviews] = useState([]);
@@ -14,8 +15,8 @@ const ChangesReview = () => {
     const fetchReviews = async () => {
       const endpoint =
         role === "admin"
-          ? "http://localhost:5000/api/products/reviews/all"
-          : "http://localhost:5000/api/products/reviews/myReview";
+          ?  `${baseUrl}/api/products/reviews/all`
+          :  `${baseUrl}/api/products/reviews/myReview`;
 
       try {
         const { data } = await axios.get(endpoint, {

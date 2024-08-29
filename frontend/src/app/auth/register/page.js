@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import { baseUrl } from "../../utils/baseUrl";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ const Register = () => {
       };
       const body = JSON.stringify({ email, password, role });
       const res = await axios.post(
-        'http://localhost:5000/api/users/register',
+        `${baseUrl}/api/users/register`,
         body,
         config
       );
