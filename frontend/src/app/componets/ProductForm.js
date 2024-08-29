@@ -1,7 +1,7 @@
 
 
 //-----------------
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback , useEffect} from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { storage } from "../firebase"; // Adjust the import path as needed
@@ -15,6 +15,7 @@ const ProductForm = ({ product }) => {
   const router = useRouter();
   // const userRole = localStorage.getItem("role");
   const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [userRole, setUserRole] = useState('');
 
   const [formData, setFormData] = useState({
     name: product.name,

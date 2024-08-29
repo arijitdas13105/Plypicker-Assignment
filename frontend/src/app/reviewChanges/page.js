@@ -25,32 +25,60 @@ const ChangesReview = () => {
       }
     }
   }, []);
+
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     const endpoint =
+  //       role === "admin"
+  //         ?  `${baseUrl}/api/products/reviews/all`
+  //         :  `${baseUrl}/api/products/reviews/myReview`;
+
+  //     try {
+  //       const { data } = await axios.get(endpoint, {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       });
+  //       console.log("bakjbddata", data);
+  //       setReviews(data.reviews);
+  //     } catch (error) {
+  //       console.error("Failed to fetch reviews:", error);
+  //     }
+  //   };
+
+  //   const userRole = localStorage.getItem("role");
+  //   setRole(userRole);
+  //   if (userRole) {
+  //     fetchReviews();
+  //   }
+  // }, [role]);
+
+
+  const fetchReviews = async (role) => {
+    const endpoint =
+      role === "admin"
+        ? `${baseUrl}/api/products/reviews/all`
+        : `${baseUrl}/api/products/reviews/myReview`;
+
+    try {
+      const { data } = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("Retrieved data", data);
+      setReviews(data.reviews);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      const endpoint =
-        role === "admin"
-          ?  `${baseUrl}/api/products/reviews/all`
-          :  `${baseUrl}/api/products/reviews/myReview`;
-
-      try {
-        const { data } = await axios.get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        console.log("bakjbddata", data);
-        setReviews(data.reviews);
-      } catch (error) {
-        console.error("Failed to fetch reviews:", error);
-      }
-    };
-
-    const userRole = localStorage.getItem("role");
-    setRole(userRole);
-    if (userRole) {
-      fetchReviews();
+    if (role) {
+      fetchReviews(role);
     }
   }, [role]);
+  
 
   const updateReviewStatus = async (reviewId, status) => {
     try {
