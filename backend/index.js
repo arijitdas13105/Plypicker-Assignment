@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -8,13 +9,12 @@ const reviewRoutes = require('./routes/reviewRoutes');
 
 
 const app = express();
-const PORT = 5000;
-
+const PORT = process.env.PORT || 3000;  
 // MongoDB Connection URL
-const MONGO_URI = 'mongodb+srv://arijitdasofficial05:Q7Wvs059k9xZhJhm@cluster0.aoeky.mongodb.net/';
+// const MONGO_URI = 'mongodb+srv://arijitdasofficial05:Q7Wvs059k9xZhJhm@cluster0.aoeky.mongodb.net/';
 
 // Connect to MongoDB
-mongoose.connect(MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
