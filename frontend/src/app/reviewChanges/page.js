@@ -78,12 +78,12 @@ const ChangesReview = () => {
       fetchReviews(role);
     }
   }, [role]);
-  
+
 
   const updateReviewStatus = async (reviewId, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/products/reviews/${reviewId}`,
+        `${baseUrl}/api/products/reviews/${reviewId}`,
         { status },
         {
           headers: {
