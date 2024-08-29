@@ -17,21 +17,24 @@ const ProductDetail = ({ id }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    // Ensuring localStorage is accessed only on the client side
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("token"));
+    }
+  }, []);
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
       setError("");
 
       try {
-        const { data } = await axios.get(
-          `${baseUrl}/api/products/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const { data } = await axios.get(`${baseUrl}/api/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         console.log("Product fetched:", data.product);
         setProduct(data.product);
       } catch (err) {
@@ -59,13 +62,11 @@ const ProductDetail = ({ id }) => {
             <h1 className="text-3xl font-bold">Edit Product</h1>
           </div>
           <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Display product image if available */}
             {product.image && (
               <div className="flex justify-center md:justify-start">
                 <img
                   src={product.image}
                   alt={product.name}
-                //   className="rounded-lg shadow-lg max-w-full h-auto"
                   className="rounded-lg shadow-lg max-w-full  h-72 object-contain "
                 />
               </div>
@@ -91,57 +92,3 @@ const ProductDetail = ({ id }) => {
 };
 
 export default ProductDetail;
-
-
-
-// "use client";
-
-// import React, { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import axios from "axios";
-// import ProductForm from "./ProductForm";
-
-// const ProductDetail = ({ id }) => {
-//   const [product, setProduct] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     const fetchProduct = async () => {
-//       setLoading(true);
-
-//       try {
-//         const { data } = await axios.get(
-//           `http://localhost:5000/api/products/${id}`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${localStorage.getItem("token")}`,
-//             },
-//           }
-//         );
-//         console.log("Products fetched:", data.product);
-//         setProduct(data.product);
-//       } catch (err) {
-//         console.error("Failed to fetch products:", err);
-//         setError("Failed to fetch products");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProduct();
-//   }, [id]);
-
-//   return (
-//     <div className="p-4">
-//       {loading ? (
-//         <p>Loading...</p>
-//       ) : product ? (
-//         <ProductForm product={product} />
-//       ) : (
-//         <p>Product not found.</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ProductDetail;
