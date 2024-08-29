@@ -9,8 +9,22 @@ const ChangesReview = () => {
   const [reviews, setReviews] = useState([]);
   const [role, setRole] = useState("");
   const router = useRouter();
-  const currentUserEmail = localStorage.getItem("email");
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
 
+  // const currentUserEmail = localStorage.getItem("email");
+  useEffect(() => {
+    // Ensure this runs only on the client-side
+    if (typeof window !== "undefined") {
+      const userEmail = localStorage.getItem("email");
+      setCurrentUserEmail(userEmail);
+      
+      const userRole = localStorage.getItem("role");
+      setRole(userRole);
+      if (userRole) {
+        fetchReviews(userRole);
+      }
+    }
+  }, []);
   useEffect(() => {
     const fetchReviews = async () => {
       const endpoint =
