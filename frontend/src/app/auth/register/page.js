@@ -1,11 +1,10 @@
+
 "use client";
 
 import React, { useState } from 'react';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/navigation';
-import { baseUrl } from "../../utils/baseUrl";
+import { useAuth } from '../../Hooks/authHooks';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +14,7 @@ const Register = () => {
   });
 
   const { email, password, role } = formData;
-  const router = useRouter();
+  const { register, loading } = useAuth(); 
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,27 +22,7 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      const body = JSON.stringify({ email, password, role });
-      const res = await axios.post(
-        `${baseUrl}/api/users/register`,
-        body,
-        config
-      );
-
-      toast.success('User registered successfully!');
-      setTimeout(() => {
-        router.push('/auth/login');
-      }, 2000);
-    } catch (err) {
-      toast.error(`Registration error: ${err.response.data.message}`);
-      console.error('Registration error:', err.response.data);
-    }
+    register(email, password, role); 
   };
 
   return (
@@ -109,9 +88,10 @@ const Register = () => {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-3 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
           >
-            Register
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-gray-500">
@@ -129,4 +109,3 @@ const Register = () => {
 };
 
 export default Register;
-

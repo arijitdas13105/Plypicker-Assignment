@@ -1,10 +1,9 @@
-// utils/cropImage.js
 
 export default function getCroppedImg(imageSrc, crop) {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.src = imageSrc;
-      image.crossOrigin = "anonymous"; // to avoid CORS issues
+      image.crossOrigin = "anonymous"; 
   
       image.onload = () => {
         const canvas = document.createElement("canvas");

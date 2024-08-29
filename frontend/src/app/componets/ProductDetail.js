@@ -1,12 +1,10 @@
+
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
+import React from "react";
+import { useProduct } from "../Hooks/useProduct";
 import ProductForm from "./ProductForm";
-import { baseUrl } from "../utils/baseUrl";
 
-// Loading Spinner Component
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-20">
     <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -14,39 +12,7 @@ const LoadingSpinner = () => (
 );
 
 const ProductDetail = ({ id }) => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [token, setToken] = useState("");
-  useEffect(() => {
-    // Ensuring localStorage is accessed only on the client side
-    if (typeof window !== "undefined") {
-      setToken(localStorage.getItem("token"));
-    }
-  }, []);
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      setError("");
-
-      try {
-        const { data } = await axios.get(`${baseUrl}/api/products/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        console.log("Product fetched:", data.product);
-        setProduct(data.product);
-      } catch (err) {
-        console.error("Failed to fetch product:", err);
-        setError("Failed to fetch product.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
+  const { product, loading, error } = useProduct(id); // Use the custom hook
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-blue-100 p-8">
@@ -67,7 +33,7 @@ const ProductDetail = ({ id }) => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="rounded-lg shadow-lg max-w-full  h-72 object-contain "
+                  className="rounded-lg shadow-lg max-w-full h-72 object-contain"
                 />
               </div>
             )}
@@ -92,3 +58,4 @@ const ProductDetail = ({ id }) => {
 };
 
 export default ProductDetail;
+
